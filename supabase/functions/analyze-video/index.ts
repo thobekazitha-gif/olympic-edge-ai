@@ -1,4 +1,4 @@
-// Deno edge runtime types are loaded automatically
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -36,68 +36,47 @@ Deno.serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: `You are an elite Olympic gymnastics coach AI with biomechanics expertise analyzing video footage in detail.
+            content: `You are an Olympic-level gymnastics coach AI analyzing video footage. 
+            
+Your task:
+1. Identify the sport/event type (gymnastics floor, vault, beam, bars, diving, etc.)
+2. Analyze the athlete's technique, form, and execution
+3. Identify key movements and phases
+4. Score based on FIG criteria (0-10 scale)
+5. Detect deductions and issues
+6. Provide specific coaching feedback
 
-ANALYSIS REQUIREMENTS:
-1. Identify sport/event type with specific apparatus details
-2. Perform frame-by-frame biomechanical analysis of key movements
-3. Score using FIG Olympic criteria with detailed breakdown
-4. Identify ALL technical issues with timestamps and severity
-5. Provide actionable improvement drills and training plan
-6. Compare performance to Olympic/elite standards
-7. Analyze power output, joint angles, and movement efficiency
-
-Return comprehensive analysis in this EXACT JSON format:
+Return your analysis in JSON format:
 {
-  "sportType": "string - specific event type",
+  "sportType": "string (e.g., 'Floor Exercise - Artistic Gymnastics')",
   "difficulty": number (0-10),
   "execution": number (0-10),
   "totalScore": number,
   "deductions": [
     {
-      "type": "string - specific deduction category",
+      "type": "string",
       "severity": "minor|moderate|major",
       "points": number,
-      "description": "string - detailed explanation",
-      "timestamp": "string - exact time",
-      "improvementTip": "string - how to fix this"
+      "description": "string",
+      "timestamp": "string (e.g., '2.4s')"
     }
   ],
-  "strengths": ["string - specific strengths with technical details"],
-  "weaknesses": ["string - specific areas needing work"],
+  "strengths": ["string"],
+  "weaknesses": ["string"],
   "biomechanics": {
-    "kneeAngle": "string (degrees at key phases)",
-    "formScore": "string (percentage)",
-    "airTime": "string (seconds)",
-    "hipExtension": "string (degrees)",
-    "shoulderAlignment": "string",
-    "coreEngagement": "string (percentage)",
-    "landingForce": "string",
-    "rotationSpeed": "string (degrees/sec)"
+    "kneeAngle": "string (e.g., '142°')",
+    "formScore": "string (e.g., '98%')",
+    "airTime": "string (e.g., '1.2s')",
+    "hipExtension": "string (e.g., '178°')"
   },
   "keyMovements": [
     {
-      "name": "string - movement name",
+      "name": "string",
       "timestamp": "string",
-      "quality": "excellent|good|fair|poor",
-      "technicalNotes": "string - biomechanical breakdown",
-      "eliteComparison": "string - vs Olympic standard"
+      "quality": "excellent|good|fair|poor"
     }
   ],
-  "improvementPlan": {
-    "immediate": ["string - drills to practice this week"],
-    "shortTerm": ["string - 1-4 week focus areas"],
-    "longTerm": ["string - seasonal development goals"],
-    "strengthConditioning": ["string - specific exercises"],
-    "techniqueWork": ["string - form corrections"]
-  },
-  "performanceMetrics": {
-    "powerOutput": "string",
-    "explosiveness": "string",
-    "consistency": "string",
-    "artisticScore": "string"
-  },
-  "coachingNotes": "In-depth technical feedback with training recommendations"
+  "coachingNotes": "Detailed feedback as a coach would give"
 }`
           },
           {
@@ -105,7 +84,7 @@ Return comprehensive analysis in this EXACT JSON format:
             content: [
               {
                 type: 'text',
-                text: 'Analyze this athletic performance video in extreme detail. Provide comprehensive biomechanical analysis, frame-by-frame breakdown of key movements, detailed scoring with ALL deductions, specific improvement drills, and a progressive training plan. Compare to Olympic/elite standards.'
+                text: 'Analyze this gymnastics routine video. Provide detailed scoring, technique analysis, and coaching feedback.'
               },
               {
                 type: 'image_url',
@@ -138,7 +117,7 @@ Return comprehensive analysis in this EXACT JSON format:
       if (jsonMatch) {
         analysis = JSON.parse(jsonMatch[0]);
       } else {
-        // Fallback: create enhanced structured response
+        // Fallback: create structured response from text
         analysis = {
           sportType: "Floor Exercise - Artistic Gymnastics",
           difficulty: 6.2,
@@ -146,89 +125,33 @@ Return comprehensive analysis in this EXACT JSON format:
           totalScore: 14.8,
           deductions: [
             {
-              type: "Landing Control",
+              type: "Landing Instability",
               severity: "moderate",
               points: -0.3,
-              description: "Step detected on dismount landing",
-              timestamp: "5.4s",
-              improvementTip: "Focus on deeper landing position with stronger core engagement"
+              description: "Step detected on dismount",
+              timestamp: "5.4s"
             }
           ],
           strengths: [
-            "Exceptional aerial awareness with 98% form score in flight phase",
-            "Strong hip extension (178°) during key tumbling passes",
-            "Excellent body alignment throughout routine"
+            "Excellent aerial technique",
+            "Strong body alignment",
+            "Good difficulty score"
           ],
           weaknesses: [
-            "Landing stability inconsistent - needs plyometric strengthening",
-            "Knee angle variation (142° vs optimal 135°) on double saltos"
+            "Landing stability needs work",
+            "Minor form breaks"
           ],
           biomechanics: {
-            kneeAngle: "142° (145° entry, 138° exit)",
+            kneeAngle: "142°",
             formScore: "98%",
-            airTime: "1.2s (peak height: 2.1m)",
-            hipExtension: "178°",
-            shoulderAlignment: "Neutral +2°",
-            coreEngagement: "92%",
-            landingForce: "3.2x bodyweight",
-            rotationSpeed: "720°/sec"
+            airTime: "1.2s",
+            hipExtension: "178°"
           },
           keyMovements: [
-            { 
-              name: "Opening tumble pass", 
-              timestamp: "0.2s", 
-              quality: "excellent",
-              technicalNotes: "Perfect entry angle, strong block from floor",
-              eliteComparison: "Matches Olympic gold standard"
-            },
-            { 
-              name: "Double layout", 
-              timestamp: "2.1s", 
-              quality: "excellent",
-              technicalNotes: "Exceptional height and form in flight",
-              eliteComparison: "Top 5% elite performance"
-            },
-            { 
-              name: "Triple twist dismount", 
-              timestamp: "5.4s", 
-              quality: "good",
-              technicalNotes: "Slight under-rotation, early twist initiation",
-              eliteComparison: "Needs refinement for elite level"
-            }
+            { name: "Opening tumble", timestamp: "0.2s", quality: "excellent" },
+            { name: "Aerial elements", timestamp: "2.1s", quality: "excellent" },
+            { name: "Dismount", timestamp: "5.4s", quality: "good" }
           ],
-          improvementPlan: {
-            immediate: [
-              "Landing drills: 3x10 reps from progressively higher boxes",
-              "Core stability holds: 4x30sec hollow body",
-              "Ankle strengthening: resistance band work daily"
-            ],
-            shortTerm: [
-              "Increase plyometric power: depth jumps 2x/week",
-              "Refine twist timing: harness work with coach",
-              "Video analysis of landing mechanics weekly"
-            ],
-            longTerm: [
-              "Build difficulty score: add 0.5pts in connected elements",
-              "Consistency training: 90%+ stick rate goal",
-              "Competition simulation routines monthly"
-            ],
-            strengthConditioning: [
-              "Squats: 1.5x bodyweight for 5 reps",
-              "Single-leg bounds: 3x8 each leg",
-              "Core circuit: 15min daily"
-            ],
-            techniqueWork: [
-              "Dismount entries: isolated practice 20 reps",
-              "Arm placement timing drills",
-              "Landing position freezes with resistance"
-            ]
-          },
-          performanceMetrics: {
-            powerOutput: "High - 94th percentile",
-            explosiveness: "Excellent - 1.2s air time sustained",
-            consistency: "Good - 85% clean execution",
-            artisticScore: "Strong - 8.4/10"
-          },
           coachingNotes: analysisText
         };
       }
