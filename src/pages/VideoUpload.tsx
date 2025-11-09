@@ -58,6 +58,45 @@ const VideoUpload = () => {
     }
   };
 
+  const extractFrameFromVideo = (videoFile: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const video = document.createElement('video');
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      video.preload = 'metadata';
+      video.muted = true;
+      
+      video.onloadeddata = () => {
+        // Seek to 2 seconds or middle of video
+        video.currentTime = Math.min(2, video.duration / 2);
+      };
+      
+      video.onseeked = () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        
+        if (!ctx) {
+          reject(new Error('Failed to get canvas context'));
+          return;
+        }
+        
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const base64 = canvas.toDataURL('image/jpeg', 0.8);
+        const base64Data = base64.split(',')[1];
+        
+        URL.revokeObjectURL(video.src);
+        resolve(base64Data);
+      };
+      
+      video.onerror = () => {
+        reject(new Error('Failed to load video'));
+      };
+      
+      video.src = URL.createObjectURL(videoFile);
+    });
+  };
+
   const handleUpload = async () => {
     if (!file) return;
     
@@ -65,43 +104,35 @@ const VideoUpload = () => {
     setUploadProgress(0);
 
     try {
-      // Convert video to base64 for AI analysis
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const base64 = e.target?.result as string;
-        const base64Data = base64.split(',')[1]; // Remove data:video/...;base64, prefix
+      setUploadProgress(10);
+      
+      // Extract a frame from the video
+      const frameBase64 = await extractFrameFromVideo(file);
+      
+      setUploadProgress(30);
 
-        setUploadProgress(30);
+      // Call AI analysis with the extracted frame
+      const { data, error } = await supabase.functions.invoke('analyze-video', {
+        body: { videoBase64: frameBase64 }
+      });
 
-        // Call AI analysis
-        const { data, error } = await supabase.functions.invoke('analyze-video', {
-          body: { videoBase64: base64Data }
+      if (error) {
+        throw error;
+      }
+
+      setUploadProgress(100);
+
+      // Store analysis in sessionStorage
+      sessionStorage.setItem('currentAnalysis', JSON.stringify(data.analysis));
+      sessionStorage.setItem('videoFileName', file.name);
+
+      setTimeout(() => {
+        toast({
+          title: "Analysis complete!",
+          description: "Your routine has been analyzed by AI",
         });
-
-        if (error) {
-          throw error;
-        }
-
-        setUploadProgress(100);
-
-        // Store analysis in sessionStorage
-        sessionStorage.setItem('currentAnalysis', JSON.stringify(data.analysis));
-        sessionStorage.setItem('videoFileName', file.name);
-
-        setTimeout(() => {
-          toast({
-            title: "Analysis complete!",
-            description: "Your routine has been analyzed by AI",
-          });
-          navigate('/analysis');
-        }, 500);
-      };
-
-      reader.onerror = () => {
-        throw new Error('Failed to read video file');
-      };
-
-      reader.readAsDataURL(file);
+        navigate('/analysis');
+      }, 500);
 
     } catch (error) {
       console.error('Upload error:', error);
