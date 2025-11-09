@@ -126,6 +126,26 @@ const VideoUpload = () => {
       sessionStorage.setItem('currentAnalysis', JSON.stringify(data.analysis));
       sessionStorage.setItem('videoFileName', file.name);
 
+      // Also save to localStorage history
+      const historyJson = localStorage.getItem('analysisHistory');
+      const history = historyJson ? JSON.parse(historyJson) : [];
+      
+      history.unshift({
+        id: Date.now().toString(),
+        fileName: file.name,
+        date: new Date().toLocaleString(),
+        score: data.analysis.totalScore || 14.8,
+        sportType: data.analysis.sportType || "Gymnastics",
+        analysis: data.analysis
+      });
+
+      // Keep only last 50 analyses
+      if (history.length > 50) {
+        history.pop();
+      }
+
+      localStorage.setItem('analysisHistory', JSON.stringify(history));
+
       setTimeout(() => {
         toast({
           title: "Analysis complete!",

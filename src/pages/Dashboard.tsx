@@ -17,11 +17,21 @@ import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const navigate = useNavigate();
   
-  const recentAnalyses = [
-    { id: 1, title: "Floor Exercise", date: "2 hours ago", score: 14.8, trend: "+0.3" },
-    { id: 2, title: "Vault - Practice", date: "1 day ago", score: 15.2, trend: "+0.5" },
-    { id: 3, title: "Beam Routine", date: "3 days ago", score: 14.1, trend: "-0.2" },
-  ];
+  // Load recent analyses from localStorage
+  const getRecentAnalyses = () => {
+    const historyJson = localStorage.getItem('analysisHistory');
+    if (historyJson) {
+      const history = JSON.parse(historyJson);
+      return history.slice(0, 3); // Get last 3
+    }
+    return [
+      { id: '1', fileName: "Floor Exercise", date: "2 hours ago", score: 14.8, trend: "+0.3" },
+      { id: '2', fileName: "Vault - Practice", date: "1 day ago", score: 15.2, trend: "+0.5" },
+      { id: '3', fileName: "Beam Routine", date: "3 days ago", score: 14.1, trend: "-0.2" },
+    ];
+  };
+
+  const recentAnalyses = getRecentAnalyses();
 
   return (
     <div className="min-h-screen pt-32 pb-20">
@@ -123,7 +133,14 @@ const Dashboard = () => {
             <Card className="p-6 glass-strong border-border/50">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-display font-bold text-foreground text-xl">Recent Analyses</h3>
-                <Button variant="outline" size="sm" className="glass">View All</Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="glass"
+                  onClick={() => navigate('/all-analyses')}
+                >
+                  View All
+                </Button>
               </div>
               
               <div className="space-y-4">
@@ -137,7 +154,7 @@ const Dashboard = () => {
                         <Video className="w-6 h-6 text-primary" />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-foreground mb-1">{analysis.title}</h4>
+                        <h4 className="font-semibold text-foreground mb-1">{analysis.fileName || analysis.title}</h4>
                         <p className="text-xs text-muted-foreground flex items-center gap-2">
                           <Calendar className="w-3 h-3" />
                           {analysis.date}
@@ -179,14 +196,6 @@ const Dashboard = () => {
                 >
                   <TrendingUp className="w-5 h-5" />
                   View Progress
-                </Button>
-                <Button 
-                  onClick={() => navigate('/dashboard')}
-                  variant="outline" 
-                  className="w-full justify-start gap-3 glass h-12"
-                >
-                  <Award className="w-5 h-5" />
-                  Compare with Elite
                 </Button>
               </div>
             </Card>
