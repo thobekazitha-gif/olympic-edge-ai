@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import CoachChat from "@/components/CoachChat";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,8 +24,60 @@ import {
 const Analysis = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(42);
+  const [analysis, setAnalysis] = useState<any>(null);
+  const [videoFileName, setVideoFileName] = useState('');
+
+  useEffect(() => {
+    // Load analysis from sessionStorage
+    const storedAnalysis = sessionStorage.getItem('currentAnalysis');
+    const storedFileName = sessionStorage.getItem('videoFileName');
+    
+    if (storedAnalysis) {
+      setAnalysis(JSON.parse(storedAnalysis));
+    }
+    if (storedFileName) {
+      setVideoFileName(storedFileName);
+    }
+  }, []);
+
+  // Use analysis data or fallback to demo data
+  const displayData = analysis || {
+    sportType: "Floor Exercise - Female Artistic Gymnastics",
+    difficulty: 6.2,
+    execution: 8.6,
+    totalScore: 14.8,
+    deductions: [
+      {
+        type: "Landing Instability",
+        severity: "moderate",
+        points: -0.3,
+        description: "Step detected on dismount. Hip angle 138° indicates compensation pattern.",
+        timestamp: "5.4s"
+      },
+      {
+        type: "Form Break",
+        severity: "minor",
+        points: -0.1,
+        description: "Minor knee bend detected on element 4. Recommend strength training.",
+        timestamp: "3.2s"
+      }
+    ],
+    strengths: [
+      "Perfect execution on aerial elements",
+      "Excellent body alignment throughout routine",
+      "Strong difficulty score potential",
+      "Consistent landing technique"
+    ],
+    biomechanics: {
+      kneeAngle: "142°",
+      formScore: "98%",
+      airTime: "1.2s",
+      hipExtension: "178°"
+    }
+  };
 
   return (
+    <>
     <div className="min-h-screen pt-32 pb-20">
       <div className="container mx-auto px-6">
         {/* Header */}
@@ -38,7 +91,12 @@ const Analysis = () => {
               Routine
               <span className="block mt-2 bg-gradient-gold bg-clip-text text-transparent">Analysis</span>
             </h1>
-            <p className="text-xl text-muted-foreground font-light">Floor Exercise - Female Artistic Gymnastics</p>
+            <p className="text-xl text-muted-foreground font-light">{displayData.sportType}</p>
+            {videoFileName && (
+              <Badge variant="outline" className="mt-2">
+                {videoFileName}
+              </Badge>
+            )}
           </div>
           <div className="flex gap-3">
             <Button variant="outline" className="gap-2 glass-strong">
@@ -138,19 +196,19 @@ const Analysis = () => {
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="text-center p-5 rounded-xl glass border border-border/30">
-                  <div className="text-3xl font-display font-bold text-foreground mb-1">142°</div>
+                  <div className="text-3xl font-display font-bold text-foreground mb-1">{displayData.biomechanics.kneeAngle}</div>
                   <div className="text-xs text-muted-foreground font-medium">Knee Angle</div>
                 </div>
                 <div className="text-center p-5 rounded-xl glass border border-border/30">
-                  <div className="text-3xl font-display font-bold text-foreground mb-1">98%</div>
+                  <div className="text-3xl font-display font-bold text-foreground mb-1">{displayData.biomechanics.formScore}</div>
                   <div className="text-xs text-muted-foreground font-medium">Form Score</div>
                 </div>
                 <div className="text-center p-5 rounded-xl glass border border-border/30">
-                  <div className="text-3xl font-display font-bold text-foreground mb-1">1.2s</div>
+                  <div className="text-3xl font-display font-bold text-foreground mb-1">{displayData.biomechanics.airTime}</div>
                   <div className="text-xs text-muted-foreground font-medium">Air Time</div>
                 </div>
                 <div className="text-center p-5 rounded-xl glass border border-border/30">
-                  <div className="text-3xl font-display font-bold text-foreground mb-1">178°</div>
+                  <div className="text-3xl font-display font-bold text-foreground mb-1">{displayData.biomechanics.hipExtension}</div>
                   <div className="text-xs text-muted-foreground font-medium">Hip Ext.</div>
                 </div>
               </div>
@@ -171,7 +229,7 @@ const Analysis = () => {
               
               <div className="flex items-end gap-4 mb-8">
                 <div className="text-7xl font-display font-bold bg-gradient-gold bg-clip-text text-transparent">
-                  14.8
+                  {displayData.totalScore.toFixed(1)}
                 </div>
                 <div className="pb-3 flex items-center gap-2 px-4 py-2 rounded-lg bg-success/10 border border-success/20">
                   <TrendingUp className="w-5 h-5 text-success" />
@@ -182,11 +240,11 @@ const Analysis = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-5 bg-gradient-to-br from-secondary/80 to-secondary/40 rounded-xl border border-border/30">
                   <div className="text-xs text-muted-foreground mb-2 font-semibold uppercase tracking-wide">Difficulty</div>
-                  <div className="text-4xl font-display font-bold text-foreground">6.2</div>
+                  <div className="text-4xl font-display font-bold text-foreground">{displayData.difficulty.toFixed(1)}</div>
                 </div>
                 <div className="p-5 bg-gradient-to-br from-secondary/80 to-secondary/40 rounded-xl border border-border/30">
                   <div className="text-xs text-muted-foreground mb-2 font-semibold uppercase tracking-wide">Execution</div>
-                  <div className="text-4xl font-display font-bold text-foreground">8.6</div>
+                  <div className="text-4xl font-display font-bold text-foreground">{displayData.execution.toFixed(1)}</div>
                 </div>
               </div>
             </Card>
@@ -201,31 +259,40 @@ const Analysis = () => {
               </div>
               
               <div className="space-y-3">
-                <div className="p-4 bg-destructive/5 border border-destructive/20 rounded-lg hover:bg-destructive/10 transition-colors cursor-pointer">
-                  <div className="flex items-start gap-3">
-                    <TrendingDown className="w-5 h-5 text-destructive mt-0.5 flex-shrink-0" />
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-semibold text-foreground">Landing Instability</span>
-                        <span className="text-sm font-bold text-destructive">-0.3</span>
+                {displayData.deductions.map((deduction: any, index: number) => (
+                  <div 
+                    key={index}
+                    className={`p-4 ${
+                      deduction.severity === 'major' ? 'bg-destructive/5 border-destructive/20' :
+                      deduction.severity === 'moderate' ? 'bg-destructive/5 border-destructive/20' :
+                      'bg-warning/5 border-warning/20'
+                    } border rounded-lg hover:bg-opacity-80 transition-colors cursor-pointer`}
+                  >
+                    <div className="flex items-start gap-3">
+                      {deduction.severity === 'major' || deduction.severity === 'moderate' ? (
+                        <TrendingDown className="w-5 h-5 text-destructive mt-0.5 flex-shrink-0" />
+                      ) : (
+                        <AlertTriangle className="w-5 h-5 text-warning mt-0.5 flex-shrink-0" />
+                      )}
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-semibold text-foreground">{deduction.type}</span>
+                          <span className={`text-sm font-bold ${
+                            deduction.severity === 'major' || deduction.severity === 'moderate' ? 'text-destructive' : 'text-warning'
+                          }`}>
+                            {deduction.points}
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{deduction.description}</p>
+                        {deduction.timestamp && (
+                          <Badge variant="outline" className="mt-2 text-xs">
+                            @ {deduction.timestamp}
+                          </Badge>
+                        )}
                       </div>
-                      <p className="text-xs text-muted-foreground leading-relaxed">Step detected on dismount. Hip angle 138° indicates compensation pattern.</p>
                     </div>
                   </div>
-                </div>
-
-                <div className="p-4 bg-warning/5 border border-warning/20 rounded-lg hover:bg-warning/10 transition-colors cursor-pointer">
-                  <div className="flex items-start gap-3">
-                    <AlertTriangle className="w-5 h-5 text-warning mt-0.5 flex-shrink-0" />
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-semibold text-foreground">Form Break</span>
-                        <span className="text-sm font-bold text-warning">-0.1</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground leading-relaxed">Minor knee bend detected on element 4. Recommend strength training.</p>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </Card>
 
@@ -239,13 +306,8 @@ const Analysis = () => {
               </div>
               
               <div className="space-y-3">
-                {[
-                  "Perfect execution on aerial elements",
-                  "Excellent body alignment throughout routine",
-                  "Strong difficulty score potential",
-                  "Consistent landing technique"
-                ].map((strength, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-lg hover:bg-success/5 transition-colors">
+                {displayData.strengths.map((strength: string, index: number) => (
+                  <div key={index} className="flex items-center gap-3 p-3 rounded-lg hover:bg-success/5 transition-colors">
                     <Zap className="w-5 h-5 text-success flex-shrink-0" />
                     <span className="text-sm text-foreground font-medium">{strength}</span>
                   </div>
@@ -256,6 +318,8 @@ const Analysis = () => {
         </div>
       </div>
     </div>
+    <CoachChat analysisContext={displayData} />
+    </>
   );
 };
 

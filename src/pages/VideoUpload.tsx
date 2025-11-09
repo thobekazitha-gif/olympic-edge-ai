@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { Upload, X, Video, CheckCircle2, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 const VideoUpload = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -57,29 +58,61 @@ const VideoUpload = () => {
     }
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!file) return;
     
     setIsUploading(true);
     setUploadProgress(0);
 
-    // Simulate upload progress
-    const interval = setInterval(() => {
-      setUploadProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => {
-            toast({
-              title: "Analysis complete!",
-              description: "Your routine has been analyzed",
-            });
-            navigate('/analysis');
-          }, 500);
-          return 100;
+    try {
+      // Convert video to base64 for AI analysis
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const base64 = e.target?.result as string;
+        const base64Data = base64.split(',')[1]; // Remove data:video/...;base64, prefix
+
+        setUploadProgress(30);
+
+        // Call AI analysis
+        const { data, error } = await supabase.functions.invoke('analyze-video', {
+          body: { videoBase64: base64Data }
+        });
+
+        if (error) {
+          throw error;
         }
-        return prev + 10;
+
+        setUploadProgress(100);
+
+        // Store analysis in sessionStorage
+        sessionStorage.setItem('currentAnalysis', JSON.stringify(data.analysis));
+        sessionStorage.setItem('videoFileName', file.name);
+
+        setTimeout(() => {
+          toast({
+            title: "Analysis complete!",
+            description: "Your routine has been analyzed by AI",
+          });
+          navigate('/analysis');
+        }, 500);
+      };
+
+      reader.onerror = () => {
+        throw new Error('Failed to read video file');
+      };
+
+      reader.readAsDataURL(file);
+
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast({
+        title: "Analysis failed",
+        description: error instanceof Error ? error.message : "Please try again",
+        variant: "destructive",
       });
-    }, 300);
+      setIsUploading(false);
+      setUploadProgress(0);
+    }
   };
 
   return (

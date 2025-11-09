@@ -1,0 +1,7 @@
+project_id = "zsksvipnphxytikdnkcm"
+
+[functions.analyze-video]
+verify_jwt = false
+
+[functions.coach-chat]
+verify_jwt = false
