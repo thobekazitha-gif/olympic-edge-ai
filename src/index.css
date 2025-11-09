@@ -17,7 +17,7 @@ All colors MUST be HSL.
     --popover: 0 0% 5%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 217 91% 60%;
+    --primary: 187 85% 53%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 12%;
@@ -26,8 +26,8 @@ All colors MUST be HSL.
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 65%;
 
-    --accent: 43 96% 56%;
-    --accent-foreground: 0 0% 10%;
+    --accent: 14 90% 62%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -38,25 +38,25 @@ All colors MUST be HSL.
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 10%;
 
-    --elite: 270 95% 65%;
+    --elite: 280 70% 60%;
     --elite-foreground: 0 0% 100%;
 
     --border: 0 0% 15%;
     --input: 0 0% 15%;
-    --ring: 217 91% 60%;
+    --ring: 187 85% 53%;
 
     --radius: 1rem;
 
-    --gradient-elite: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(270 95% 65%) 100%);
-    --gradient-gold: linear-gradient(135deg, hsl(43 96% 56%) 0%, hsl(33 100% 50%) 100%);
+    --gradient-elite: linear-gradient(135deg, hsl(187 85% 53%) 0%, hsl(280 70% 60%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(14 90% 62%) 0%, hsl(43 96% 56%) 100%);
     --gradient-platinum: linear-gradient(135deg, hsl(0 0% 90%) 0%, hsl(0 0% 70%) 100%);
-    --gradient-mesh: radial-gradient(at 40% 20%, hsl(217 91% 60% / 0.3) 0px, transparent 50%),
-                     radial-gradient(at 80% 0%, hsl(270 95% 65% / 0.3) 0px, transparent 50%),
-                     radial-gradient(at 0% 50%, hsl(43 96% 56% / 0.2) 0px, transparent 50%);
+    --gradient-mesh: radial-gradient(at 40% 20%, hsl(187 85% 53% / 0.3) 0px, transparent 50%),
+                     radial-gradient(at 80% 0%, hsl(280 70% 60% / 0.3) 0px, transparent 50%),
+                     radial-gradient(at 0% 50%, hsl(14 90% 62% / 0.2) 0px, transparent 50%);
 
-    --shadow-glow-primary: 0 0 60px hsl(217 91% 60% / 0.4);
-    --shadow-glow-elite: 0 0 80px hsl(270 95% 65% / 0.35);
-    --shadow-gold: 0 0 40px hsl(43 96% 56% / 0.3);
+    --shadow-glow-primary: 0 0 60px hsl(187 85% 53% / 0.4);
+    --shadow-glow-elite: 0 0 80px hsl(280 70% 60% / 0.35);
+    --shadow-gold: 0 0 40px hsl(14 90% 62% / 0.3);
     --shadow-brutal: 0 20px 60px hsl(0 0% 0% / 0.8);
     --shadow-float: 0 10px 40px hsl(0 0% 0% / 0.6);
 
