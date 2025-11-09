@@ -14,15 +14,31 @@ import {
   Pause,
   SkipBack,
   SkipForward,
-  Maximize2
+  Maximize2,
+  Menu
 } from "lucide-react";
 
 const AnalysisDemo = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <section className="py-32 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-mesh opacity-20" />
       
       <div className="container mx-auto px-6 relative z-10">
+        <div className="flex justify-end mb-6">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={scrollToTop}
+            className="gap-2"
+          >
+            <Menu className="w-4 h-4" />
+            Menu
+          </Button>
+        </div>
         <div className="text-center mb-20">
           <Badge className="mb-6 px-6 py-3 bg-elite/10 border-elite/30 text-elite font-semibold">
             <Activity className="w-4 h-4 mr-2" />

@@ -1,4 +1,5 @@
-import { TrendingUp, Users, Award, Target } from "lucide-react";
+import { TrendingUp, Users, Award, Target, Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const stats = [
   {
@@ -28,11 +29,26 @@ const stats = [
 ];
 
 const StatsBar = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <section className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-elite/5 to-accent/5" />
       
       <div className="container mx-auto px-6 relative z-10">
+        <div className="flex justify-end mb-6">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={scrollToTop}
+            className="gap-2"
+          >
+            <Menu className="w-4 h-4" />
+            Menu
+          </Button>
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, index) => {
             const Icon = stat.icon;

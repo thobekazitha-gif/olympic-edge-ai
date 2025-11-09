@@ -1,14 +1,32 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Medal, Sparkles, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Medal, Sparkles, CheckCircle2, Menu } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 
 const CTASection = () => {
+  const navigate = useNavigate();
+  
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <section className="py-32 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-mesh opacity-30" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-primary/10 via-elite/10 to-transparent rounded-full blur-3xl" />
 
       <div className="container mx-auto px-6 relative z-10">
+        <div className="flex justify-end mb-6">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={scrollToTop}
+            className="gap-2"
+          >
+            <Menu className="w-4 h-4" />
+            Menu
+          </Button>
+        </div>
         <Card className="max-w-5xl mx-auto p-12 md:p-16 glass-strong border-border/50 shadow-brutal">
           <div className="text-center space-y-10">
             <div className="inline-flex items-center justify-center">
@@ -37,6 +55,7 @@ const CTASection = () => {
             <div className="flex flex-col sm:flex-row gap-5 justify-center pt-6">
               <Button 
                 size="lg" 
+                onClick={() => navigate('/upload')}
                 className="group gap-3 bg-gradient-elite hover:opacity-90 shadow-glow-elite text-lg h-16 px-12 font-bold transition-elite"
               >
                 <Sparkles className="w-5 h-5" />
@@ -46,6 +65,7 @@ const CTASection = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
+                onClick={() => navigate('/dashboard')}
                 className="gap-3 glass-strong hover:bg-secondary/60 text-lg h-16 px-12 font-bold border-border/50 hover:border-primary/50 transition-elite"
               >
                 Schedule Pro Demo
