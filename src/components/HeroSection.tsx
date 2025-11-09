@@ -2,9 +2,12 @@ import { Upload, Sparkles, Shield, Target, ArrowRight, Play } from "lucide-react
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated Background */}
@@ -30,7 +33,7 @@ const HeroSection = () => {
         <div className="max-w-6xl mx-auto">
           {/* Badge */}
           <div className="flex justify-center mb-8 animate-fade-in">
-            <Badge className="px-6 py-3 bg-primary/10 border-primary/20 hover:bg-primary/20 transition-elite">
+            <Badge className="px-6 py-3 bg-primary/10 border-primary/20 hover:bg-primary/20 transition-elite cursor-pointer">
               <Sparkles className="w-4 h-4 mr-2 text-primary" />
               <span className="text-sm font-semibold bg-gradient-elite bg-clip-text text-transparent">
                 Powered by Olympic-Grade AI Technology
@@ -57,6 +60,7 @@ const HeroSection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20 animate-fade-in" style={{ animationDelay: '0.4s' }}>
             <Button 
               size="lg" 
+              onClick={() => navigate('/upload')}
               className="group relative gap-3 bg-gradient-elite hover:opacity-90 shadow-glow-elite text-lg h-16 px-10 font-semibold transition-elite overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-primary to-elite opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -66,11 +70,12 @@ const HeroSection = () => {
             </Button>
             <Button 
               size="lg" 
-              variant="outline" 
+              variant="outline"
+              onClick={() => navigate('/dashboard')}
               className="gap-3 glass-strong hover:bg-secondary/60 text-lg h-16 px-10 font-semibold border-border/50 hover:border-primary/50 transition-elite group"
             >
               <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              Watch Demo Analysis
+              View Demo Analysis
             </Button>
           </div>
 
