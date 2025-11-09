@@ -1,11 +1,46 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Award, Target, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { TrendingUp, Award, Target, Calendar, Home, Upload, BarChart3 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Progress = () => {
+  const navigate = useNavigate();
+  
   return (
     <div className="min-h-screen pt-32 pb-20">
       <div className="container mx-auto px-6">
+        {/* Navigation */}
+        <div className="flex justify-end gap-2 mb-8">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => navigate('/')}
+            className="gap-2"
+          >
+            <Home className="w-4 h-4" />
+            Home
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => navigate('/upload')}
+            className="gap-2"
+          >
+            <Upload className="w-4 h-4" />
+            Upload
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => navigate('/dashboard')}
+            className="gap-2"
+          >
+            <BarChart3 className="w-4 h-4" />
+            Dashboard
+          </Button>
+        </div>
+
         <div className="mb-12">
           <Badge className="mb-6 px-6 py-3 bg-success/10 border-success/30 text-success font-semibold">
             <TrendingUp className="w-4 h-4 mr-2" />

@@ -8,10 +8,15 @@ import {
   Calendar,
   Target,
   Zap,
-  Activity
+  Activity,
+  Home,
+  Upload as UploadIcon
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  
   const recentAnalyses = [
     { id: 1, title: "Floor Exercise", date: "2 hours ago", score: 14.8, trend: "+0.3" },
     { id: 2, title: "Vault - Practice", date: "1 day ago", score: 15.2, trend: "+0.5" },
@@ -21,6 +26,37 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen pt-32 pb-20">
       <div className="container mx-auto px-6">
+        {/* Navigation */}
+        <div className="flex justify-end gap-2 mb-8">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => navigate('/')}
+            className="gap-2"
+          >
+            <Home className="w-4 h-4" />
+            Home
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => navigate('/upload')}
+            className="gap-2"
+          >
+            <UploadIcon className="w-4 h-4" />
+            Upload
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => navigate('/progress')}
+            className="gap-2"
+          >
+            <TrendingUp className="w-4 h-4" />
+            Progress
+          </Button>
+        </div>
+
         {/* Header */}
         <div className="mb-12">
           <Badge className="mb-6 px-6 py-3 bg-primary/10 border-primary/30 text-primary font-semibold">
@@ -129,15 +165,26 @@ const Dashboard = () => {
             <Card className="p-6 glass-strong border-border/50">
               <h3 className="font-display font-bold text-foreground text-xl mb-6">Quick Actions</h3>
               <div className="space-y-3">
-                <Button className="w-full justify-start gap-3 bg-gradient-elite shadow-glow h-12">
+                <Button 
+                  onClick={() => navigate('/upload')}
+                  className="w-full justify-start gap-3 bg-gradient-elite shadow-glow h-12"
+                >
                   <Video className="w-5 h-5" />
                   Upload New Routine
                 </Button>
-                <Button variant="outline" className="w-full justify-start gap-3 glass h-12">
+                <Button 
+                  onClick={() => navigate('/progress')}
+                  variant="outline" 
+                  className="w-full justify-start gap-3 glass h-12"
+                >
                   <TrendingUp className="w-5 h-5" />
                   View Progress
                 </Button>
-                <Button variant="outline" className="w-full justify-start gap-3 glass h-12">
+                <Button 
+                  onClick={() => navigate('/dashboard')}
+                  variant="outline" 
+                  className="w-full justify-start gap-3 glass h-12"
+                >
                   <Award className="w-5 h-5" />
                   Compare with Elite
                 </Button>

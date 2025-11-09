@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, X, Video, CheckCircle2, Sparkles } from "lucide-react";
+import { Upload, X, Video, CheckCircle2, Sparkles, Home, BarChart3, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -118,6 +118,37 @@ const VideoUpload = () => {
   return (
     <div className="min-h-screen pt-32 pb-20">
       <div className="container mx-auto px-6 max-w-4xl">
+        {/* Navigation */}
+        <div className="flex justify-end gap-2 mb-8">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => navigate('/')}
+            className="gap-2"
+          >
+            <Home className="w-4 h-4" />
+            Home
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => navigate('/dashboard')}
+            className="gap-2"
+          >
+            <BarChart3 className="w-4 h-4" />
+            Dashboard
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => navigate('/progress')}
+            className="gap-2"
+          >
+            <TrendingUp className="w-4 h-4" />
+            Progress
+          </Button>
+        </div>
+
         <div className="text-center mb-12">
           <Badge className="mb-6 px-6 py-3 bg-primary/10 border-primary/30 text-primary font-semibold">
             <Video className="w-4 h-4 mr-2" />
