@@ -65,7 +65,7 @@ const CTASection = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate('/pricing')}
                 className="gap-3 glass-strong hover:bg-secondary/60 text-lg h-16 px-12 font-bold border-border/50 hover:border-primary/50 transition-elite"
               >
                 Schedule Pro Demo
