@@ -1,38 +1,58 @@
-import { Medal, Video, BarChart3, TrendingUp } from "lucide-react";
+import { Medal, Video, BarChart3, TrendingUp, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const Header = () => {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
-      <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-elite flex items-center justify-center">
-            <Medal className="w-6 h-6 text-white" />
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 glass-strong">
+      <div className="absolute inset-0 bg-gradient-mesh opacity-30" />
+      
+      <div className="container mx-auto px-6 h-20 flex items-center justify-between relative z-10">
+        <div className="flex items-center gap-4">
+          <div className="relative group">
+            <div className="absolute inset-0 bg-gradient-elite rounded-xl blur-lg opacity-75 group-hover:opacity-100 transition-opacity" />
+            <div className="relative w-12 h-12 rounded-xl bg-gradient-elite flex items-center justify-center shadow-glow">
+              <Medal className="w-7 h-7 text-white" />
+            </div>
           </div>
           <div>
-            <h1 className="text-lg font-bold text-foreground">Olympic Edge</h1>
-            <p className="text-xs text-muted-foreground">AI Performance Coach</p>
+            <h1 className="text-xl font-display font-bold text-foreground tracking-tight">Olympic Edge</h1>
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
+              <p className="text-xs text-muted-foreground font-medium">AI Performance System</p>
+            </div>
           </div>
         </div>
         
-        <nav className="hidden md:flex items-center gap-1">
-          <Button variant="ghost" size="sm" className="gap-2">
+        <nav className="hidden lg:flex items-center gap-2">
+          <Button variant="ghost" size="sm" className="gap-2 hover:bg-secondary/80 transition-elite">
             <Video className="w-4 h-4" />
-            Analysis
+            <span className="font-medium">Analysis</span>
           </Button>
-          <Button variant="ghost" size="sm" className="gap-2">
+          <Button variant="ghost" size="sm" className="gap-2 hover:bg-secondary/80 transition-elite">
             <BarChart3 className="w-4 h-4" />
-            Dashboard
+            <span className="font-medium">Dashboard</span>
           </Button>
-          <Button variant="ghost" size="sm" className="gap-2">
+          <Button variant="ghost" size="sm" className="gap-2 hover:bg-secondary/80 transition-elite">
             <TrendingUp className="w-4 h-4" />
-            Progress
+            <span className="font-medium">Progress</span>
           </Button>
+          
+          <Badge variant="outline" className="ml-2 border-elite/30 bg-elite/10 text-elite font-semibold">
+            <Sparkles className="w-3 h-3 mr-1" />
+            PRO
+          </Badge>
         </nav>
 
-        <Button size="sm" className="bg-gradient-elite hover:opacity-90 transition-opacity shadow-glow">
-          Start Analysis
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button 
+            size="sm" 
+            className="relative group bg-gradient-elite hover:opacity-90 transition-elite shadow-glow font-semibold"
+          >
+            <span className="relative z-10">Start Analysis</span>
+            <div className="absolute inset-0 bg-gradient-elite opacity-0 group-hover:opacity-100 transition-opacity rounded-lg blur-xl" />
+          </Button>
+        </div>
       </div>
     </header>
   );

@@ -1,64 +1,73 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Medal } from "lucide-react";
+import { ArrowRight, Medal, Sparkles, CheckCircle2 } from "lucide-react";
+import { Card } from "@/components/ui/card";
 
 const CTASection = () => {
   return (
-    <section className="py-24 bg-gradient-performance relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent rounded-full blur-3xl" />
-      </div>
+    <section className="py-32 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-mesh opacity-30" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-primary/10 via-elite/10 to-transparent rounded-full blur-3xl" />
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-elite shadow-glow mb-4">
-            <Medal className="w-10 h-10 text-white" />
-          </div>
-
-          <h2 className="text-4xl md:text-6xl font-bold text-foreground">
-            Ready to Train Like an
-            <span className="block bg-gradient-gold bg-clip-text text-transparent">
-              Olympic Champion?
-            </span>
-          </h2>
-
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Join elite athletes worldwide using AI-powered video analysis to reach peak performance. 
-            Upload your first routine and discover what Olympic-level coaching feels like.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <Button 
-              size="lg" 
-              className="gap-2 bg-gradient-elite hover:opacity-90 shadow-glow text-lg h-14 px-8"
-            >
-              Start Free Analysis
-              <ArrowRight className="w-5 h-5" />
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="gap-2 text-lg h-14 px-8 border-border hover:bg-secondary"
-            >
-              Schedule Demo
-            </Button>
-          </div>
-
-          <div className="pt-8 flex items-center justify-center gap-8 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-success" />
-              <span>No credit card required</span>
+        <Card className="max-w-5xl mx-auto p-12 md:p-16 glass-strong border-border/50 shadow-brutal">
+          <div className="text-center space-y-10">
+            <div className="inline-flex items-center justify-center">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-elite rounded-3xl blur-2xl animate-glow" />
+                <div className="relative w-24 h-24 rounded-3xl bg-gradient-elite shadow-glow-elite flex items-center justify-center">
+                  <Medal className="w-12 h-12 text-white" />
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-success" />
-              <span>Olympic-grade accuracy</span>
+
+            <div className="space-y-6">
+              <h2 className="text-5xl md:text-7xl font-display font-bold text-foreground leading-tight">
+                Ready to Train Like an
+                <span className="block mt-3 bg-gradient-gold bg-clip-text text-transparent">
+                  Olympic Champion?
+                </span>
+              </h2>
+
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-light">
+                Join elite athletes worldwide using AI-powered video analysis to reach peak performance. 
+                Upload your first routine and discover what Olympic-level coaching feels like.
+              </p>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-success" />
-              <span>Instant results</span>
+
+            <div className="flex flex-col sm:flex-row gap-5 justify-center pt-6">
+              <Button 
+                size="lg" 
+                className="group gap-3 bg-gradient-elite hover:opacity-90 shadow-glow-elite text-lg h-16 px-12 font-bold transition-elite"
+              >
+                <Sparkles className="w-5 h-5" />
+                Start Free Analysis
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="gap-3 glass-strong hover:bg-secondary/60 text-lg h-16 px-12 font-bold border-border/50 hover:border-primary/50 transition-elite"
+              >
+                Schedule Pro Demo
+              </Button>
+            </div>
+
+            <div className="pt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="flex items-center justify-center gap-3 p-4 rounded-xl glass border-border/30">
+                <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0" />
+                <span className="text-sm font-semibold text-foreground">No credit card required</span>
+              </div>
+              <div className="flex items-center justify-center gap-3 p-4 rounded-xl glass border-border/30">
+                <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0" />
+                <span className="text-sm font-semibold text-foreground">Olympic-grade accuracy</span>
+              </div>
+              <div className="flex items-center justify-center gap-3 p-4 rounded-xl glass border-border/30">
+                <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0" />
+                <span className="text-sm font-semibold text-foreground">Instant AI results</span>
+              </div>
             </div>
           </div>
-        </div>
+        </Card>
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
+import StatsBar from "@/components/StatsBar";
 import AnalysisDemo from "@/components/AnalysisDemo";
 import FeaturesGrid from "@/components/FeaturesGrid";
 import CTASection from "@/components/CTASection";
@@ -8,8 +9,9 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="pt-16">
+      <main className="pt-20">
         <HeroSection />
+        <StatsBar />
         <AnalysisDemo />
         <FeaturesGrid />
         <CTASection />
