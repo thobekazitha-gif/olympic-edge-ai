@@ -17,12 +17,12 @@ import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const navigate = useNavigate();
   
-  // Load recent analyses from localStorage
-  const getRecentAnalyses = () => {
+  // Load all analyses from localStorage
+  const getAllAnalyses = () => {
     const historyJson = localStorage.getItem('analysisHistory');
     if (historyJson) {
       const history = JSON.parse(historyJson);
-      return history.slice(0, 3); // Get last 3
+      return history;
     }
     return [
       { id: '1', fileName: "Floor Exercise", date: "2 hours ago", score: 14.8, trend: "+0.3" },
@@ -31,7 +31,16 @@ const Dashboard = () => {
     ];
   };
 
-  const recentAnalyses = getRecentAnalyses();
+  const allAnalyses = getAllAnalyses();
+
+  const handleViewAnalysis = (analysis: any) => {
+    if (analysis.analysis) {
+      // Stored analysis with full data
+      sessionStorage.setItem('currentAnalysis', JSON.stringify(analysis.analysis));
+      sessionStorage.setItem('videoFileName', analysis.fileName);
+      navigate('/analysis');
+    }
+  };
 
   return (
     <div className="min-h-screen pt-32 pb-20">
@@ -128,52 +137,66 @@ const Dashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Recent Analyses */}
+          {/* All Analyses */}
           <div className="lg:col-span-2">
             <Card className="p-6 glass-strong border-border/50">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="font-display font-bold text-foreground text-xl">Recent Analyses</h3>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="glass"
-                  onClick={() => navigate('/all-analyses')}
-                >
-                  View All
-                </Button>
+                <h3 className="font-display font-bold text-foreground text-xl">All Analyses</h3>
+                <Badge variant="outline">{allAnalyses.length} Total</Badge>
               </div>
               
-              <div className="space-y-4">
-                {recentAnalyses.map((analysis) => (
-                  <div 
-                    key={analysis.id}
-                    className="flex items-center justify-between p-5 rounded-xl glass border border-border/30 hover:border-primary/50 transition-elite cursor-pointer group"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <Video className="w-6 h-6 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-foreground mb-1">{analysis.fileName || analysis.title}</h4>
-                        <p className="text-xs text-muted-foreground flex items-center gap-2">
-                          <Calendar className="w-3 h-3" />
-                          {analysis.date}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-display font-bold bg-gradient-gold bg-clip-text text-transparent">
-                        {analysis.score}
-                      </div>
-                      <div className={`text-sm font-semibold ${
-                        analysis.trend.startsWith('+') ? 'text-success' : 'text-destructive'
-                      }`}>
-                        {analysis.trend}
-                      </div>
-                    </div>
+              {allAnalyses.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <Video className="w-8 h-8 text-primary" />
                   </div>
-                ))}
-              </div>
+                  <h4 className="font-semibold text-foreground mb-2">No analyses yet</h4>
+                  <p className="text-sm text-muted-foreground mb-4">Upload your first routine to get started</p>
+                  <Button 
+                    onClick={() => navigate('/upload')}
+                    size="sm"
+                    className="bg-gradient-elite shadow-glow"
+                  >
+                    <Video className="w-4 h-4 mr-2" />
+                    Upload Routine
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                  {allAnalyses.map((analysis: any) => (
+                    <div 
+                      key={analysis.id}
+                      onClick={() => handleViewAnalysis(analysis)}
+                      className="flex items-center justify-between p-5 rounded-xl glass border border-border/30 hover:border-primary/50 transition-elite cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <Video className="w-6 h-6 text-primary" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-foreground mb-1">{analysis.fileName || analysis.title}</h4>
+                          <p className="text-xs text-muted-foreground flex items-center gap-2">
+                            <Calendar className="w-3 h-3" />
+                            {analysis.date}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-display font-bold bg-gradient-gold bg-clip-text text-transparent">
+                          {analysis.score.toFixed ? analysis.score.toFixed(1) : analysis.score}
+                        </div>
+                        {analysis.trend && (
+                          <div className={`text-sm font-semibold ${
+                            analysis.trend.startsWith('+') ? 'text-success' : 'text-destructive'
+                          }`}>
+                            {analysis.trend}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </Card>
           </div>
 
